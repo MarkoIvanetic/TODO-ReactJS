@@ -9,7 +9,7 @@
     <script src="https://fb.me/react-0.14.3.js"></script>
     <script src="https://fb.me/react-dom-0.14.3.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-    <script type="text/babel">
+<script type="text/babel">
   /*
  * Components
  */
@@ -40,25 +40,12 @@ var ContactForm = React.createClass({
     var errors = this.props.value.errors || {};
 
     return (
-      React.createElement('form', {onSubmit: this.onSubmit, className: 'ContactForm', noValidate: true},
-        React.createElement('input', {
-          type: 'email',
-          className: errors.email && 'ContactForm-error',
-          placeholder: 'Email',
-          onInput: this.onEmailInput,
-          value: this.props.value.email,
-          autoFocus: true,
-        }),
-        React.createElement('input', {
-          type: 'text',
-          className: errors.name && 'ContactForm-error',
-          placeholder: 'Name',
-          onInput: this.onNameInput,
-          value: this.props.value.name,
-        }),
-        React.createElement('button', {type: 'submit'}, "Add Contact")
-      )
-    );
+        <form className="ContactForm" onSubmit={this.onSubmit}>
+        <input type="email" placeholder="Email" onInput={this.onEmailInput} value={this.props.value.email}></input>
+        <input type="text" placeholder="Name" onInput={this.onNameInput} value={this.props.value.name}></input>
+        <button type="submit">Add Contact</button>
+        </form>
+      );
   },
 });
 
