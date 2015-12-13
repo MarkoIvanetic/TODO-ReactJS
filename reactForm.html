@@ -1,80 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Testing</title>
-  <link rel="stylesheet" href="bootstrap.css">
+	<meta charset="utf-8">
+	<title>Testing</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
-<div id="react-app"></div>
-    <script src="https://fb.me/react-0.14.3.js"></script>
-    <script src="https://fb.me/react-dom-0.14.3.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-<script type="text/babel">
+	<div id="react-app"></div>
+	<script src="https://fb.me/react-0.14.3.js"></script>
+	<script src="https://fb.me/react-dom-0.14.3.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+	<script type="text/babel">
   /*
  * Components
  */
-  var pendingItems = [
-    'Clean the room',
-    'Get milf',
-    'Sellout and stuff'
-    ];
+  // var pendingItems = [
+  //   'Clean the room',
+  //   'Get milf',
+  //   'Sellout and stuff'
+  //   ];
 
-  var finishedItems = [
-    'Clean the room',
-    ];
+  // var finishedItems = [
+  //   'Clean the room',
+  //   ];
 
-var TodoList = React.createClass({
-    getInitialState: function() {
-        return { items: this.props.list };
-    },
-  handleClick: function(i) {
-    console.log('You clicked: ' + i + ':' + this.props.listString);
-    if (this.props.listString == "pendingItems") {
-      var removed = this.state.items.splice(i, 1);
-      finishedItems.push(removed);
-      this.refs.pending.forceUpdate()
-    };
-    if (this.props.listString == "finishedItems") {
-      var removed = this.state.items.splice(i, 1);
-      pendingItems.push(removed);
-      this.refs.finished.forceUpdate()
-    };
+  var Todo = React.createClass({
+  	render: function() {
+  		return (
+  			<div>
+  				<div onClick={this.props.onClick}>{this.props.title}</div>
+  			</div>
+  			);
+  	},
+  });
 
-  },
-  render: function() {
-    return (
-      <ul>
-        {this.state.items.map(function(item, i) {
-          return (
-            <li onClick={this.handleClick.bind(this, i)} key={i}>{this.state.items[i]}</li>
-          );
-        }, this)}
-      </ul>
-    );
-  },
-});
+  var Todos = React.createClass({
+  	getInitialState: function() {
+  		return {
+  			pendingItems: ['Apple', 'Banana', 'Cranberry'],
+  			finishedItems: ['Clean stuff']
+  		};
+  	},
 
-var Layout = React.createClass({
-  render: function (){
-    return (
-      <div className='col-xs-12'>
-        <div className='col-xs-6'>
-        <h1>Pending Tasks</h1>
-        <TodoList list={pendingItems} ref='pending' listString="pendingItems"/>
-        </div>
-        <div className='col-xs-6'>
-        <h1>Finished Tasks</h1>
-        <TodoList list={finishedItems} ref='finished' listString="finishedItems"/>
-        </div>
-        <div className='col-xs-6'></div>
-      </div>
+  	handleClick: function(index) {
+  		var items = this.state.pendingItems.filter(function(item, i) {
+  			return index !== i;
+  		});
+  		// this.state.finishedItems.push.this.state.pendingItems[index];
+  		var temp = this.state.pendingItems[index];
+  		var tempArray = this.state.finishedItems.slice(0);
 
-      )
-  }
-});
+  		tempArray.push(temp);
+  		console.log(tempArray);
+  		this.setState({pendingItems: items});
+  		this.setState({finishedItems: tempArray});
+  	},
 
-ReactDOM.render(<Layout />, document.getElementById('react-app'));
+  	render: function() {
+  		return (
+  			<div>
+  				<h1>Pending items</h1>
+  				{this.state.pendingItems.map(function(item, i) {
+  					var boundClick = this.handleClick.bind(this, i);
+  					return (
+  						<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
+  						);
+  				}, this)}
+  				<h1>Finished items</h1>
+  				{this.state.finishedItems.map(function(item, i) {
+  					var boundClick = this.handleClick.bind(this, i);
+  					return (
+  						<Todo key={i} title={item} ref={'itemF' + i} />
+  						);
+  				}, this)}
+  			</div>
+  			);
+  	}
+  });
+
+  ReactDOM.render(<Todos />, document.getElementById('react-app'));
 </script>
 
 </body>
