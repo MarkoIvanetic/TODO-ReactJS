@@ -42,7 +42,7 @@
   		};
   	},
 
-  	handleClick: function(index) {
+  	handlePendingClick: function(index) {
   		var items = this.state.pendingItems.filter(function(item, i) {
   			return index !== i;
   		});
@@ -51,9 +51,20 @@
   		var tempArray = this.state.finishedItems.slice(0);
 
   		tempArray.push(temp);
-  		console.log(tempArray);
   		this.setState({pendingItems: items});
   		this.setState({finishedItems: tempArray});
+  	},
+  	  	handleFinishedClick: function(index) {
+  		var items = this.state.finishedItems.filter(function(item, i) {
+  			return index !== i;
+  		});
+  		// this.state.finishedItems.push.this.state.pendingItems[index];
+  		var temp = this.state.finishedItems[index];
+  		var tempArray = this.state.pendingItems.slice(0);
+
+  		tempArray.push(temp);
+  		this.setState({finishedItems: items});
+  		this.setState({pendingItems: tempArray});
   	},
 
   	render: function() {
@@ -61,16 +72,16 @@
   			<div>
   				<h1>Pending items</h1>
   				{this.state.pendingItems.map(function(item, i) {
-  					var boundClick = this.handleClick.bind(this, i);
+  					var boundClick = this.handlePendingClick.bind(this, i);
   					return (
   						<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
   						);
   				}, this)}
   				<h1>Finished items</h1>
   				{this.state.finishedItems.map(function(item, i) {
-  					var boundClick = this.handleClick.bind(this, i);
+  					var boundClick = this.handleFinishedClick.bind(this, i);
   					return (
-  						<Todo key={i} title={item} ref={'itemF' + i} />
+  						<Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
   						);
   				}, this)}
   			</div>
