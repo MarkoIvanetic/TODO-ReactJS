@@ -1,4 +1,11 @@
+<html>
+	<body id="react-app">
+	</body>
+<script>
 var PeopleList = React.createClass({
+	propTypes:{
+		vouch: React.PropTypes.string
+	}
     var people = [{
     	'name':'Testnane'
     },{
@@ -8,19 +15,16 @@ var PeopleList = React.createClass({
     }];
     
     increment: function() {
-    	if ((1+this.state.counter) % 3 != 0) {
-        this.setState({ counter: this.state.counter+1 });
-        console.log("Works");
-        } else {
-        	this.setState({ counter: this.state.counter+2 });
-        };
+		console.log(this.props.vouch);
     },
 
     render: function() {
         return <div>
             <div>{this.state.counter}</div>
-            <FancyButton text="Increment!" onClick={this.increment} />
+            <FancyButton text="Increment!" onClick={this.increment} vouch="Test"/>
         </div>;
     }
 });
 ReactDOM.render(<PeopleList />, document.getElementById('react-app'));
+</script>
+</html>

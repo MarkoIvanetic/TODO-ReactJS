@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
-	<div id="react-app"></div>
+	<div id="react-app" class="col-xs-12"></div>
 	<script src="https://fb.me/react-0.14.3.js"></script>
 	<script src="https://fb.me/react-dom-0.14.3.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
@@ -27,14 +27,26 @@
   var Todo = React.createClass({
   	render: function() {
   		return (
-  			<div>
-  				<div onClick={this.props.onClick}>{this.props.title}</div>
-  			</div>
+  				<div className="col-xs-10 task" onClick={this.props.onClick}>{this.props.title}</div>
+  			);
+  	},
+  });  
+
+  var Deleter = React.createClass({
+  	propTypes:{
+  		vouch: React.PropTypes.string
+  	},
+  	render: function() {
+  		return (
+  			<a className="col-xs-2" href="#" vouch={this.props.vouch} index={this.props.index} onClick={this.props.onClick}>X</a>
   			);
   	},
   });
 
   var Todos = React.createClass({
+  	  propTypes:{
+  		vouch: React.PropTypes.string,
+  	},
   	getInitialState: function() {
   		return {
   			pendingItems: ['Apple', 'Banana', 'Cranberry'],
@@ -53,8 +65,31 @@
   		tempArray.push(temp);
   		this.setState({pendingItems: items});
   		this.setState({finishedItems: tempArray});
+
+  		console.log(this.refs.itemP0.props.title);
   	},
-  	  	handleFinishedClick: function(index) {
+  	handleDeleteClick: function(index) {
+  		console.log("DeleteClick");
+  		if (this.props.vouch == "pending") {
+  			console.log("Pending Click");
+  			var items = this.state.pendingItems.filter(function(item, i) {
+  				return index !== i;
+  			});
+
+  			this.setState({pendingItems: items});
+  		} else{
+  			console.log(this.state.vouch);
+  		};
+
+  		if (this.props.vouch == "finished") {
+  			var items = this.state.finishedItems.filter(function(item, i) {
+  				return index !== i;
+  			});
+
+  			this.setState({finishedItems: items});
+  		};
+  	},
+  	handleFinishedClick: function(index) {
   		var items = this.state.finishedItems.filter(function(item, i) {
   			return index !== i;
   		});
@@ -66,31 +101,42 @@
   		this.setState({finishedItems: items});
   		this.setState({pendingItems: tempArray});
   	},
-
   	render: function() {
   		return (
-  			<div>
-  				<h1>Pending items</h1>
-  				{this.state.pendingItems.map(function(item, i) {
-  					var boundClick = this.handlePendingClick.bind(this, i);
-  					return (
-  						<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
-  						);
-  				}, this)}
-  				<h1>Finished items</h1>
-  				{this.state.finishedItems.map(function(item, i) {
-  					var boundClick = this.handleFinishedClick.bind(this, i);
-  					return (
-  						<Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
-  						);
-  				}, this)}
+  			<div className="col-xs-6">
+  				<div className="col-xs-6">
+  					<h1>Pending items</h1>
+  					{this.state.pendingItems.map(function(item, i) {
+  						var boundClick = this.handlePendingClick.bind(this, i);
+  						var deleteClick = this.handleDeleteClick.bind(this, i);
+  						return (
+  							<div key={'c'+i} className="col-xs-12">
+  								<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
+  								<Deleter index={i} vouch="pending" key={'d'+i} onClick={deleteClick} />
+  							</div>
+  							);
+  					}, this)}
+  				</div>
+  				<div className="col-xs-6">
+  					<h1>Finished items</h1>
+  					{this.state.finishedItems.map(function(item, i) {
+  						var boundClick = this.handleFinishedClick.bind(this, i);
+  						return (
+  							<Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
+  							);
+  					}, this)}
+  				</div>
   			</div>
   			);
   	}
   });
 
-  ReactDOM.render(<Todos />, document.getElementById('react-app'));
+ReactDOM.render(<Todos className="col-xs-6"/>, document.getElementById('react-app'));
 </script>
-
+<style>
+	.task{
+		cursor: pointer;
+	}
+</style>
 </body>
 </html>
