@@ -13,37 +13,31 @@
 	<script type="text/babel">
 
 var Something = React.createClass({
-
+ propTypes:{
+    vouch: React.PropTypes.string,
+},
     render: function() {
         return (
         <div>
-            <h1 onClick={this.props.onClick} vouch={this.props.vouch}>Click!</h1>
+           <h1 onClick={this.props.onClick.bind(null, this.props.vouch)} vouch={this.props.vouch}>Click!</h1>
         </div>
         );
     }
 });
 var List = React.createClass({
-	 propTypes:{
-  		vouch: React.PropTypes.string
-  	},
-  	getInitialState: function() {
-  		return {
-  			option1: "test1",
-  			option2: "test2"
-  		};
-  	},
-	log: function() {
-		console.log(this.props.vouch);
-    },
-	render: function  () {
-		return (
-			<div>
-			<Something onClick={this.log} vouch={this.state.option1} />
-			<Something onClick={this.log} vouch={this.state.option2} />
-			</div>
-			);
-	}
+
+    log: function (vouch) {
+    console.log(vouch);
+},
+    render: function  () {
+        return (
+        	<div>
+            <Something onClick={this.log} vouch="value 1" />
+            <Something onClick={this.log} vouch="value 2" />
+            </div>
+            );
+    }
 });
-ReactDOM.render(<List vouch={this.props.vouch} />, document.getElementById('react-app'));
+ReactDOM.render(<List />, document.getElementById('react-app'));
 </script>
 </html>

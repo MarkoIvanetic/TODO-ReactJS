@@ -38,7 +38,7 @@
   	},
   	render: function() {
   		return (
-  			<a className="col-xs-2" href="#" vouch={this.props.vouch} index={this.props.index} onClick={this.props.onClick}>X</a>
+  			<a className="col-xs-2" href="#" data-vouch={this.props.vouch} index={this.props.index} onClick={this.props.onClick}>X</a>
   			);
   	},
   });
@@ -65,27 +65,21 @@
   		tempArray.push(temp);
   		this.setState({pendingItems: items});
   		this.setState({finishedItems: tempArray});
-
-  		console.log(this.refs.itemP0.props.title);
   	},
-  	handleDeleteClick: function(index) {
-  		console.log("DeleteClick");
-  		if (this.props.vouch == "pending") {
-  			console.log("Pending Click");
+  	handleDeleteClick: function(index,e) {
+  		if (e.target.dataset.vouch == "pending") {
   			var items = this.state.pendingItems.filter(function(item, i) {
   				return index !== i;
   			});
-
+  			console.log("Item removed from pending");
   			this.setState({pendingItems: items});
-  		} else{
-  			console.log(this.state.vouch);
   		};
 
-  		if (this.props.vouch == "finished") {
+  		if (e.target.dataset.vouch == "finished") {
   			var items = this.state.finishedItems.filter(function(item, i) {
   				return index !== i;
   			});
-
+  			console.log("Item removed from finished");
   			this.setState({finishedItems: items});
   		};
   	},
@@ -110,9 +104,9 @@
   						var boundClick = this.handlePendingClick.bind(this, i);
   						var deleteClick = this.handleDeleteClick.bind(this, i);
   						return (
-  							<div key={'c'+i} className="col-xs-12">
+  							<div key={'cp'+i} className="col-xs-12">
   								<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
-  								<Deleter index={i} vouch="pending" key={'d'+i} onClick={deleteClick} />
+  								<Deleter index={i} vouch="pending" key={'dp'+i} onClick={deleteClick} />
   							</div>
   							);
   					}, this)}
@@ -121,8 +115,12 @@
   					<h1>Finished items</h1>
   					{this.state.finishedItems.map(function(item, i) {
   						var boundClick = this.handleFinishedClick.bind(this, i);
+  						var deleteClick = this.handleDeleteClick.bind(this, i);
   						return (
+  							<div key={'cf'+i} className="col-xs-12">
   							<Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
+  							<Deleter index={i} vouch="finished" key={'df'+i} onClick={deleteClick} />
+  							</div>
   							);
   					}, this)}
   				</div>
