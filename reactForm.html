@@ -27,8 +27,8 @@
   var Todo = React.createClass({
   	render: function() {
   		return (
-  				<div className="col-xs-10 task" onClick={this.props.onClick}>{this.props.title}</div>
-  			);
+        <div className="col-xs-10 task" onClick={this.props.onClick}>{this.props.title}</div>
+        );
   	},
   });  
 
@@ -42,22 +42,45 @@
   			);
   	},
   });
+  var Tasker = React.createClass({
+  getInitialState: function() {
+    return {
+   };
+ },
+   handleChange: function(event) {
+    this.setState({value: event.target.value});
+  },
+    handleClick: function () {
+            this.props.onClick(this.state.value);
+            this.setState({value: ''});
+        },
+    render: function () {
+      return (
+        <div className="addTaskContainer col-xs-12">
+        <div className="col-xs-4">
+          <input className="col-xs-12 col-sm-6" type="text" value={this.state.value} onChange={this.handleChange}/>
+          <button className="col-xs-12 col-sm-3" onClick={this.handleClick}>Add task</button>
+        </div>
+        </div>
+        );
+    }
+  });
 
-  var Todos = React.createClass({
-  	  propTypes:{
-  		vouch: React.PropTypes.string,
-  	},
-  	getInitialState: function() {
-  		return {
-  			pendingItems: ['Apple', 'Banana', 'Cranberry'],
-  			finishedItems: ['Clean stuff']
-  		};
-  	},
+  var TodoList = React.createClass({
+   propTypes:{
+    vouch: React.PropTypes.string,
+  },
+  getInitialState: function() {
+    return {
+     pendingItems: ['Get groceries', 'Clean the house', 'Do the laundry'],
+     finishedItems: ['Chill']
+   };
+ },
 
-  	handlePendingClick: function(index) {
-  		var items = this.state.pendingItems.filter(function(item, i) {
-  			return index !== i;
-  		});
+ handlePendingClick: function(index) {
+  var items = this.state.pendingItems.filter(function(item, i) {
+   return index !== i;
+ });
   		// this.state.finishedItems.push.this.state.pendingItems[index];
   		var temp = this.state.pendingItems[index];
   		var tempArray = this.state.finishedItems.slice(0);
@@ -66,6 +89,7 @@
   		this.setState({pendingItems: items});
   		this.setState({finishedItems: tempArray});
   	},
+
   	handleDeleteClick: function(index,e) {
   		if (e.target.dataset.vouch == "pending") {
   			var items = this.state.pendingItems.filter(function(item, i) {
@@ -83,11 +107,11 @@
   			this.setState({finishedItems: items});
   		};
   	},
+
   	handleFinishedClick: function(index) {
   		var items = this.state.finishedItems.filter(function(item, i) {
   			return index !== i;
   		});
-  		// this.state.finishedItems.push.this.state.pendingItems[index];
   		var temp = this.state.finishedItems[index];
   		var tempArray = this.state.pendingItems.slice(0);
 
@@ -95,52 +119,84 @@
   		this.setState({finishedItems: items});
   		this.setState({pendingItems: tempArray});
   	},
-  	render: function() {
-  		return (
-  			<div className="col-xs-6">
-  				<div className="col-xs-6">
-  					<h1>Pending items</h1>
-  					{this.state.pendingItems.map(function(item, i) {
-  						var boundClick = this.handlePendingClick.bind(this, i);
-  						var deleteClick = this.handleDeleteClick.bind(this, i);
-  						return (
-  							<div key={'cp'+i} className="col-xs-12 list">
-  								<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
-  								<Deleter index={i} vouch="pending" key={'dp'+i} onClick={deleteClick} />
-  							</div>
-  							);
-  					}, this)}
-  				</div>
-  				<div className="col-xs-6">
-  					<h1>Finished items</h1>
-  					{this.state.finishedItems.map(function(item, i) {
-  						var boundClick = this.handleFinishedClick.bind(this, i);
-  						var deleteClick = this.handleDeleteClick.bind(this, i);
-  						return (
-  							<div key={'cf'+i} className="col-xs-12 list">
-  							<Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
-  							<Deleter index={i} vouch="finished" key={'df'+i} onClick={deleteClick} />
-  							</div>
-  							);
-  					}, this)}
-  				</div>
-  			</div>
-  			);
-  	}
-  });
+    handleNewTaskClick: function (value) {
+      console.log(value);
+      var tempArray = this.state.pendingItems.slice(0);
+      tempArray.push(value);
+      this.setState({pendingItems: tempArray});
+      console.log(this.props.value);
+    },
 
-ReactDOM.render(<Todos className="col-xs-6"/>, document.getElementById('react-app'));
+    render: function() {
+      return (
+        <div className="col-xs-12">
+         <div className="col-xs-6 listContainer">
+          <div className="col-xs-6 pending">
+           <h1>Pending tasks</h1>
+           {this.state.pendingItems.map(function(item, i) {
+            var boundClick = this.handlePendingClick.bind(this, i);
+            var deleteClick = this.handleDeleteClick.bind(this, i);
+
+            return (
+             <div key={'cp'+i} className="col-xs-12 list">
+              <Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
+              <Deleter index={i} vouch="pending" key={'dp'+i} onClick={deleteClick} />
+            </div>
+            );
+          }, this)}
+         </div>
+         <div className="col-xs-6 finished">
+           <h1>Finished tasks</h1>
+           {this.state.finishedItems.map(function(item, i) {
+            var boundClick = this.handleFinishedClick.bind(this, i);
+            var deleteClick = this.handleDeleteClick.bind(this, i);
+
+            return (
+             <div key={'cf'+i} className="col-xs-12 list">
+               <Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
+               <Deleter index={i} vouch="finished" key={'df'+i} onClick={deleteClick} />
+             </div>
+             );
+          }, this)}
+         </div>
+       </div>
+       <Tasker onClick={this.handleNewTaskClick}/>
+     </div>
+     );
+}
+});
+
+ReactDOM.render(<TodoList className="col-xs-6"/>, document.getElementById('react-app'));
 </script>
 <style>
-	.task{
+	.task, a{
 		cursor: pointer;
 		line-height: 40px;
+    color: #333;
+    transition: all 0.5s;
 	}
 
 	.list{
 		border:1px solid gray;
 		margin-bottom: 5px;
+    transition: all 0.5s;
 	}
+  .list:hover{
+    background: #eee;
+  }
+  a:hover{
+    color: red;
+  }
+  .addTaskContainer button{
+    border: 0;
+    background-color: #333;
+    color:white;
+    line-height: 24px;
+  }
+  .addTaskContainer{
+    margin-top: 20px;
+    padding-top: 20px;
+  }
 </style>
 </body>
 </html>
