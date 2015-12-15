@@ -104,7 +104,7 @@
   						var boundClick = this.handlePendingClick.bind(this, i);
   						var deleteClick = this.handleDeleteClick.bind(this, i);
   						return (
-  							<div key={'cp'+i} className="col-xs-12">
+  							<div key={'cp'+i} className="col-xs-12 list">
   								<Todo onClick={boundClick} key={i} title={item} ref={'itemP' + i} />
   								<Deleter index={i} vouch="pending" key={'dp'+i} onClick={deleteClick} />
   							</div>
@@ -117,7 +117,7 @@
   						var boundClick = this.handleFinishedClick.bind(this, i);
   						var deleteClick = this.handleDeleteClick.bind(this, i);
   						return (
-  							<div key={'cf'+i} className="col-xs-12">
+  							<div key={'cf'+i} className="col-xs-12 list">
   							<Todo onClick={boundClick} key={i} title={item} ref={'itemF' + i} />
   							<Deleter index={i} vouch="finished" key={'df'+i} onClick={deleteClick} />
   							</div>
@@ -134,6 +134,12 @@ ReactDOM.render(<Todos className="col-xs-6"/>, document.getElementById('react-ap
 <style>
 	.task{
 		cursor: pointer;
+		line-height: 40px;
+	}
+
+	.list{
+		border:1px solid gray;
+		margin-bottom: 5px;
 	}
 </style>
 </body>
