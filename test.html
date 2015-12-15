@@ -13,10 +13,6 @@
 	<script type="text/babel">
 
 var Something = React.createClass({
-	propTypes:{
-		vouch: React.PropTypes.string
-	},
-    
 
     render: function() {
         return (
@@ -27,15 +23,27 @@ var Something = React.createClass({
     }
 });
 var List = React.createClass({
+	 propTypes:{
+  		vouch: React.PropTypes.string
+  	},
+  	getInitialState: function() {
+  		return {
+  			option1: "test1",
+  			option2: "test2"
+  		};
+  	},
 	log: function() {
 		console.log(this.props.vouch);
     },
 	render: function  () {
 		return (
-			<Something onClick={this.log} vouch="test" />
+			<div>
+			<Something onClick={this.log} vouch={this.state.option1} />
+			<Something onClick={this.log} vouch={this.state.option2} />
+			</div>
 			);
 	}
 });
-ReactDOM.render(<List />, document.getElementById('react-app'));
+ReactDOM.render(<List vouch={this.props.vouch} />, document.getElementById('react-app'));
 </script>
 </html>
