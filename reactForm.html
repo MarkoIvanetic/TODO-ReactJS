@@ -11,18 +11,6 @@
 	<script src="https://fb.me/react-dom-0.14.3.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
 	<script type="text/babel">
-  /*
- * Components
- */
-  // var pendingItems = [
-  //   'Clean the room',
-  //   'Get milf',
-  //   'Sellout and stuff'
-  //   ];
-
-  // var finishedItems = [
-  //   'Clean the room',
-  //   ];
 
   var Todo = React.createClass({
   	render: function() {
@@ -169,34 +157,33 @@
 ReactDOM.render(<TodoList className="col-xs-6"/>, document.getElementById('react-app'));
 </script>
 <style>
-	.task, a{
-		cursor: pointer;
-		line-height: 40px;
-    color: #333;
-    transition: all 0.5s;
-	}
-
-	.list{
-		border:1px solid gray;
-		margin-bottom: 5px;
-    transition: all 0.5s;
-	}
-  .list:hover{
-    background: #eee;
-  }
-  a:hover{
-    color: red;
-  }
-  .addTaskContainer button{
-    border: 0;
-    background-color: #333;
-    color:white;
-    line-height: 24px;
-  }
-  .addTaskContainer{
-    margin-top: 20px;
-    padding-top: 20px;
-  }
+.task,a {
+cursor: pointer;
+line-height: 40px;
+color: #333;
+transition: all 0.5s;
+}
+.list {
+border: 1px solid gray;
+margin-bottom: 5px;
+transition: all 0.5s;
+}
+.list:hover {
+background: #eee;
+}
+a:hover {
+color: red;
+}
+.addTaskContainer button {
+border: 0;
+background-color: #333;
+color: white;
+line-height: 24px;
+}
+.addTaskContainer {
+margin-top: 20px;
+padding-top: 20px;
+}
 </style>
 </body>
 </html>
